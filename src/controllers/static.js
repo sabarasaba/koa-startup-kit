@@ -18,9 +18,14 @@ async function contact (ctx) {
   })
 }
 
+async function contactPost (ctx) {
+
+}
+
 module.exports = {
   index,
   about,
   terms,
-  contact
+  contact,
+  contactPost
 }

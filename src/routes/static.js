@@ -7,5 +7,6 @@ router.get('/', controller.index)
 router.get('/about', controller.about)
 router.get('/terms', controller.terms)
 router.get('/contact', controller.contact)
+router.post('/contact', controller.contactPost)
 
 module.exports = router
