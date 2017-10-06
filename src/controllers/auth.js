@@ -1,12 +1,12 @@
 async function login (ctx) {
   await ctx.render('login', {
-  	layout: 'empty'
+    layout: 'empty'
   })
 }
 
 async function signup (ctx) {
   await ctx.render('signup', {
-  	layout: 'empty'
+    layout: 'empty'
   })
 }
 
