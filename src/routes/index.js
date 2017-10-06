@@ -3,8 +3,8 @@ const Router = require('koa-router')
 
 const notFound = new Router()
 
-notFound.all('*', ctx => {
-  ctx.render('404', {
+notFound.all('*', async (ctx) => {
+  await ctx.render('404', {
     layout: 'empty'
   })
 })

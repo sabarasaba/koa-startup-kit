@@ -36,7 +36,7 @@
     "koa-hbs": "^1.0.0",
     "koa-router": "next",
     "koa-sslify": "^2.1.2",
-    "koa-static-folder": "^0.1.6",
+    "koa-static": "^4.0.1",
     "lodash": "^4.17.4",
     "massive": "^3.1.0",
     "moment": "^2.18.1",

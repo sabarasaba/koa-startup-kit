@@ -1,5 +1,5 @@
 async function index (ctx) {
-  ctx.render('index')
+  await ctx.render('index')
 }
 
 module.exports = {
