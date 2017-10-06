@@ -1,0 +1,60 @@
+{
+  "name": "koa-startup-kit",
+  "version": "1.0.0",
+  "description": "Koa Startup starterkit",
+  "main": "src/index.js",
+  "author": "Ignacio Rivas <rivasign@gmail.com>",
+  "private": true,
+  "scripts": {
+    "test": "jest --forceExit",
+    "start": "node -r dotenv/config src/",
+    "dev": "nodemon -L -r dotenv/config src/",
+    "worker": "node src/worker",
+    "lint": "eslint src",
+    "prepush": "npm-run-all lint",
+    "migrate": "knex migrate:latest --env api",
+    "migrate:create": "knex migrate:make --env api",
+    "migrate:rollback": "knex migrate:rollback --env api"
+  },
+  "cacheDirectories": [
+    "node_modules"
+  ],
+  "engines": {
+    "node": "8.x"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "babel-polyfill": "^6.23.0",
+    "boom": "^5.1.0",
+    "chalk": "^2.0.1",
+    "debug": "^2.6.8",
+    "dotenv": "^4.0.0",
+    "joi": "^10.6.0",
+    "knex": "^0.13.0",
+    "koa": "^2.2.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-hbs": "^1.0.0",
+    "koa-router": "next",
+    "koa-sslify": "^2.1.2",
+    "koa-static-folder": "^0.1.6",
+    "lodash": "^4.17.4",
+    "massive": "^3.1.0",
+    "moment": "^2.18.1",
+    "pg": "^6.2.4",
+    "sendgrid": "^5.2.0",
+    "supertest": "^3.0.0",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.3.0",
+    "eslint-plugin-node": "^5.0.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "husky": "^0.13.4",
+    "jest": "^20.0.4",
+    "nodemon": "^1.11.0",
+    "npm-run-all": "^4.0.2"
+  }
+}
