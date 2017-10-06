@@ -1,3 +1,4 @@
+const authPages = require('./auth')
 const staticPages = require('./static')
 const Router = require('koa-router')
 
@@ -12,6 +13,7 @@ notFound.all('*', async (ctx) => {
 module.exports = {
   load: (app) => {
     app.use(staticPages.routes())
+    app.use(authPages.routes())
     app.use(notFound.routes())
   }
 }
