@@ -12,15 +12,15 @@ function load (hbs) {
     return opts.inverse(this)
   })
 
-  hbs.registerHelper('copyright_year', (opts) => {
+  hbs.registerHelper('getCopyrightYear', (opts) => {
     return new Date().getFullYear()
   })
 
-  hbs.registerHelper('get_name', (opts) => {
+  hbs.registerHelper('getAppName', (opts) => {
     return APP_NAME
   })
 
-  hbs.registerHelper('get_analytics', (opts) => {
+  hbs.registerHelper('getAnalytics', (opts) => {
     return GA_CODE
   })
 }
