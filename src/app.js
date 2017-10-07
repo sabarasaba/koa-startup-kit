@@ -4,7 +4,8 @@ require('babel-polyfill')
 const {
   APP_NAME,
   PORT,
-  NODE_ENV
+  NODE_ENV,
+  SESSION_SECRET
 } = process.env
 
 const Koa = require('koa')
@@ -13,6 +14,8 @@ const body = require('koa-bodyparser')
 const hbs = require('koa-hbs')
 const serve = require('koa-static')
 const enforceHttps = require('koa-sslify')
+const session = require('koa-generic-session')
+const flash = require('koa-better-flash')
 const appRoutes = require('./routes/index')
 const handlebarsHelpers = require('./helpers/handlebars')
 const { database } = require('./helpers/database')
@@ -29,7 +32,12 @@ database.then(db => {
   app.context.db = db
 }).catch(e => console.log('Couldnt initialize db', e))
 
+// Session
+app.keys = [SESSION_SECRET]
+app.use(session())
+
 // Middlewares
+app.use(flash())
 app.use(body())
 
 // Mount public directory

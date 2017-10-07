@@ -14,12 +14,14 @@ async function terms (ctx) {
 
 async function contact (ctx) {
   await ctx.render('contact', {
-    fixedHeader: true
+    fixedHeader: true,
+    flash: ctx.flash()
   })
 }
 
 async function contactPost (ctx) {
-
+  ctx.flash('success', 'we got your message papi, we\'ll get back to you soon :)')
+  ctx.redirect('/contact')
 }
 
 module.exports = {
