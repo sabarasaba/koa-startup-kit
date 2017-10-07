@@ -1,12 +1,13 @@
+const path = require('path')
 const massive = require('massive')
 const knex = require('knex')
 
 const {
-  DATABASE_API_HOST: apiHost,
-  DATABASE_API_PORT: apiPort = 5432,
-  DATABASE_API_USER: apiUser,
-  DATABASE_API_PASSWORD: apiPassword,
-  DATABASE_API_NAME: apiDatabase,
+  DATABASE_HOST: apiHost,
+  DATABASE_PORT: apiPort = 5432,
+  DATABASE_USER: apiUser,
+  DATABASE_PASSWORD: apiPassword,
+  DATABASE_NAME: apiDatabase,
   DATABASE_URL: databaseUrl,
   NODE_ENV
 } = process.env
@@ -30,10 +31,10 @@ const knexConfig = {
   },
   migrations: {
     tableName: 'knex_migrations',
-    directory: `${__dirname}/database/migrations`
+    directory: path.join(__dirname, '../../database/migrations')
   },
   seeds: {
-    directory: `${__dirname}/database/seeds`
+    directory: path.join(__dirname, '../../database/seeds')
   }
 }
 

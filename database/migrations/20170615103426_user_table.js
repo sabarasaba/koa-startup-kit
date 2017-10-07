@@ -1,13 +1,13 @@
-const apiSchema = process.env.DATABASE_API_SCHEMA
+const apiSchema = process.env.DATABASE_SCHEMA
 
 exports.up = function (knex, Promise) {
-  return createSchema().then(createRemindersTable)
+  return createSchema().then(createUsersTable)
 
   function createSchema () {
     return knex.schema.raw(`CREATE SCHEMA ${apiSchema}`)
   }
 
-  function createRemindersTable () {
+  function createUsersTable () {
     return knex.schema.withSchema(apiSchema)
       .createTable('user', function (table) {
         table.increments('id').unsigned().unique().primary()

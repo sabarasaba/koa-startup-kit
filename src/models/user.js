@@ -1,7 +1,7 @@
 const joi = require('joi')
 
 const {
-  DATABASE_API_SCHEMA
+  DATABASE_SCHEMA
 } = process.env
 
 const schema = joi.object().keys({
@@ -11,11 +11,11 @@ const schema = joi.object().keys({
 })
 
 async function save ({ db, user }) {
-  return db[DATABASE_API_SCHEMA].users.save(user)
+  return db[DATABASE_SCHEMA].users.save(user)
 }
 
 async function update ({ db, userId, user }) {
-  return db[DATABASE_API_SCHEMA].user.update(Object.assign(
+  return db[DATABASE_SCHEMA].user.update(Object.assign(
     {},
     user,
     { userId, updated_at: new Date() }
