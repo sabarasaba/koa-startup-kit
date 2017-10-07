@@ -15,11 +15,11 @@ async function save ({ db, user }) {
 }
 
 async function update ({ db, userId, user }) {
-  return db[DATABASE_SCHEMA].user.update(Object.assign(
-    {},
-    user,
-    { userId, updated_at: new Date() }
-  ))
+  return db[DATABASE_SCHEMA].user.update({
+    ...user,
+    userId,
+    updated_at: new Date()
+  })
 }
 
 async function remove ({ db, id, user }) {
