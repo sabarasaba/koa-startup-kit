@@ -10,7 +10,21 @@ async function signup (ctx) {
   })
 }
 
+async function forgot (ctx) {
+  await ctx.render('forgot', {
+    layout: 'empty'
+  })
+}
+
+async function reset (ctx) {
+  await ctx.render('reset', {
+    layout: 'empty'
+  })
+}
+
 module.exports = {
   login,
-  signup
+  signup,
+  forgot,
+  reset
 }
