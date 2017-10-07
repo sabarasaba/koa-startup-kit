@@ -11,10 +11,18 @@ exports.up = function (knex, Promise) {
     return knex.schema.withSchema(apiSchema)
       .createTable('user', function (table) {
         table.increments('id').unsigned().unique().primary()
+
+        // User settings
         table.string('firstName', 50).notNullable()
         table.string('lastName', 50).notNullable()
         table.string('email', 250).notNullable()
 
+        // Password related stuff
+        table.string('password').notNullable()
+        table.string('passwordResetToken')
+        table.date('passwordResetExpires')
+
+        // Utils
         table.timestamp('created_at').defaultTo(knex.fn.now())
         table.timestamp('updated_at').defaultTo(knex.fn.now())
 
