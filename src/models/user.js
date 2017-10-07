@@ -1,4 +1,5 @@
 const joi = require('joi')
+const { generateHash } = require('../helpers/utils')
 
 const {
   DATABASE_SCHEMA
@@ -11,7 +12,12 @@ const schema = joi.object().keys({
 })
 
 async function save ({ db, user }) {
-  return db[DATABASE_SCHEMA].users.save(user)
+  const hash = await generateHash(user.password)
+
+  return db[DATABASE_SCHEMA].users.save({
+    ...user,
+    password: hash
+  })
 }
 
 async function update ({ db, userId, user }) {

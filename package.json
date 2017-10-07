@@ -26,6 +26,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "babel-polyfill": "^6.23.0",
+    "bcrypt-nodejs": "^0.0.3",
     "chalk": "^2.0.1",
     "dotenv": "^4.0.0",
     "joi": "^11.1.1",
