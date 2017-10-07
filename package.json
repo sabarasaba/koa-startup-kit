@@ -13,7 +13,9 @@
     "prepush": "yarn lint",
     "migrate": "knex migrate:latest",
     "migrate:create": "knex migrate:make",
-    "migrate:rollback": "knex migrate:rollback"
+    "migrate:rollback": "knex migrate:rollback",
+    "seed": "knex seed:run",
+    "seed:create": "knex seed:make"
   },
   "cacheDirectories": [
     "node_modules"
