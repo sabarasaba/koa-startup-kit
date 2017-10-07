@@ -16,7 +16,10 @@ const serve = require('koa-static')
 const enforceHttps = require('koa-sslify')
 const session = require('koa-generic-session')
 const flash = require('koa-better-flash')
+const CSRF = require('koa-csrf')
+const helmet = require('koa-helmet')
 const appRoutes = require('./routes/index')
+const csrfMiddleware = require('./middlewares/csrf')
 const handlebarsHelpers = require('./helpers/handlebars')
 const { database } = require('./helpers/database')
 
@@ -39,6 +42,18 @@ app.use(session())
 // Middlewares
 app.use(flash())
 app.use(body())
+
+// Security middlewares
+app.use(helmet())
+app.use(new CSRF({
+  invalidSessionSecretMessage: 'Invalid session secret',
+  invalidSessionSecretStatusCode: 403,
+  invalidTokenMessage: 'Invalid CSRF token',
+  invalidTokenStatusCode: 403,
+  excludedMethods: [ 'GET', 'HEAD', 'OPTIONS' ],
+  disableQuery: false
+}))
+app.use(csrfMiddleware)
 
 // Mount public directory
 app.use(serve(path.join(__dirname, 'public')))
