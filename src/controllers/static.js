@@ -20,7 +20,7 @@ async function contact (ctx) {
 }
 
 async function contactPost (ctx) {
-  ctx.flash('success', 'we got your message papi, we\'ll get back to you soon :)')
+  ctx.flash('success', ['We got your message, we\'ll get back to you soon :)'])
   ctx.redirect('/contact')
 }
 

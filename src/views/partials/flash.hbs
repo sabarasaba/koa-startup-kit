@@ -1,4 +1,4 @@
-{{#if flash.success}}
+{{#each flash.success}}
   <div class="alert alert-success alert-with-icon" data-notify="container">
     <div class="container">
       <div class="alert-wrapper">
@@ -7,14 +7,14 @@
         </button>
         <div class="message">
           <i class="nc-icon nc-bell-55"></i>
-          {{ flash.success }}
+          {{ this }}
         </div>
       </div>
     </div>
   </div>
-{{/if}}
+{{/each}}
 
-{{#if flash.fail}}
+{{#each flash.error}}
   <div class="alert alert-danger alert-with-icon" data-notify="container">
     <div class="container">
       <div class="alert-wrapper">
@@ -23,9 +23,9 @@
         </button>
         <div class="message">
           <i class="nc-icon nc-bell-55"></i>
-          {{ flash.fail }}
+          {{ this }}
         </div>
       </div>
     </div>
   </div>
-{{/if}}
+{{/each}}

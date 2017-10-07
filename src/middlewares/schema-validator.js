@@ -1,16 +1,14 @@
 const Joi = require('joi')
-const Boom = require('boom')
 
 module.exports = schema => async (ctx, next) => {
   const {error} = Joi.validate(ctx.request.body, schema)
 
   if (error) {
-    // TODO: flash error message ?
-    throw Boom.badImplementation(
-      'Invalid input',
-      error
-    )
-  }
+    const errors = error.details.map(error => error.message)
 
-  return next()
+    ctx.flash('error', errors)
+    ctx.redirect(ctx.request.url)
+  } else {
+    return next()
+  }
 }
