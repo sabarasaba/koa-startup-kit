@@ -33,7 +33,7 @@ async function contactPost (ctx) {
     from: ctx.body.email,
     subject: `${APP_NAME}: New message from ${ctx.body.name}`,
     content: ctx.body.body
-  }).catch(e => console.log(e)) // TODO: Properly log it with winston..
+  }).catch(e => ctx.logError(e))
 
   ctx.flash('success', ['We got your message, we\'ll get back to you soon :)'])
   ctx.redirect('/contact')

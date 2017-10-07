@@ -40,12 +40,15 @@
     "koa-router": "next",
     "koa-sslify": "^2.1.2",
     "koa-static": "^4.0.1",
+    "koa2-winston": "^1.7.1",
     "lodash": "^4.17.4",
     "massive": "^3.1.0",
     "moment": "^2.18.1",
     "pg": "^6.2.4",
     "sendgrid": "^5.2.0",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "winston": "^2.4.0",
+    "winston-papertrail": "^1.0.5"
   },
   "devDependencies": {
     "eslint": "^3.19.0",

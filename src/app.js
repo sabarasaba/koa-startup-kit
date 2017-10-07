@@ -20,6 +20,7 @@ const CSRF = require('koa-csrf')
 const helmet = require('koa-helmet')
 const appRoutes = require('./routes/index')
 const csrfMiddleware = require('./middlewares/csrf')
+const loggerMiddleware = require('./middlewares/logger')
 const handlebarsHelpers = require('./helpers/handlebars')
 const { database } = require('./helpers/database')
 
@@ -42,6 +43,7 @@ app.use(session())
 // Middlewares
 app.use(flash())
 app.use(body())
+app.use(loggerMiddleware())
 
 // Security middlewares
 app.use(helmet())
