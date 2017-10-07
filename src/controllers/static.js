@@ -10,17 +10,21 @@ async function index (ctx) {
 }
 
 async function about (ctx) {
-  await ctx.render('about')
+  await ctx.render('static/about', {
+    title: 'About'
+  })
 }
 
 async function terms (ctx) {
-  await ctx.render('terms', {
+  await ctx.render('static/terms', {
+    title: 'Terms',
     fixedHeader: true
   })
 }
 
 async function contact (ctx) {
-  await ctx.render('contact', {
+  await ctx.render('static/contact', {
+    title: 'Contact',
     fixedHeader: true,
     flash: ctx.flash()
   })

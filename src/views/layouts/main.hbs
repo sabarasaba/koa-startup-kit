@@ -10,7 +10,8 @@
         <meta name="author" content="">
         <link rel="icon" href="/favicon.ico">
 
-        <title>{{title}}</title>
+        <title>{{#if title}}{{title}} - {{/if}}{{getAppName}}</title>
+        <title><%- typeof title !== 'undefined' ? `${title} - Dust` : 'Dust' %></title>
 
         <!-- Bootstrap core CSS -->
         <link href="/css/bootstrap.min.css" rel="stylesheet" />
