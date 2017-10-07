@@ -1,7 +1,7 @@
 {
   "name": "koa-startup-kit",
   "version": "1.0.0",
-  "description": "Koa Startup starterkit",
+  "description": "Koa Startup Kit",
   "main": "src/index.js",
   "author": "Ignacio Rivas <rivasign@gmail.com>",
   "private": true,
@@ -9,12 +9,11 @@
     "test": "jest --forceExit",
     "start": "node -r dotenv/config src/",
     "dev": "nodemon -L -r dotenv/config src/ -e 'js hbs'",
-    "worker": "node src/worker",
     "lint": "eslint src",
-    "prepush": "npm-run-all lint",
-    "migrate": "knex migrate:latest --env api",
-    "migrate:create": "knex migrate:make --env api",
-    "migrate:rollback": "knex migrate:rollback --env api"
+    "prepush": "yarn lint",
+    "migrate": "knex migrate:latest",
+    "migrate:create": "knex migrate:make",
+    "migrate:rollback": "knex migrate:rollback"
   },
   "cacheDirectories": [
     "node_modules"
@@ -25,9 +24,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "babel-polyfill": "^6.23.0",
-    "boom": "^5.1.0",
     "chalk": "^2.0.1",
-    "debug": "^2.6.8",
     "dotenv": "^4.0.0",
     "joi": "^11.1.1",
     "knex": "^0.13.0",
@@ -44,8 +41,7 @@
     "moment": "^2.18.1",
     "pg": "^6.2.4",
     "sendgrid": "^5.2.0",
-    "supertest": "^3.0.0",
-    "url": "^0.11.0"
+    "supertest": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
@@ -56,7 +52,6 @@
     "eslint-plugin-standard": "^3.0.1",
     "husky": "^0.13.4",
     "jest": "^20.0.4",
-    "nodemon": "^1.11.0",
-    "npm-run-all": "^4.0.2"
+    "nodemon": "^1.11.0"
   }
 }
