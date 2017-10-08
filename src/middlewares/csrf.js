@@ -4,6 +4,7 @@ async function csrfMiddleware (ctx, next) {
   }
 
   ctx.state.csrf = ctx.csrf
+
   await next()
 }
 

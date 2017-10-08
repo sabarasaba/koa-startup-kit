@@ -13,8 +13,8 @@ exports.up = function (knex, Promise) {
         table.increments('id').unsigned().unique().primary()
 
         // User settings
-        table.string('firstName', 50).notNullable()
-        table.string('lastName', 50).notNullable()
+        table.string('firstName', 50)
+        table.string('lastName', 50)
         table.string('email', 250).notNullable()
 
         // Password related stuff

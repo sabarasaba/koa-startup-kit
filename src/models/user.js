@@ -5,16 +5,27 @@ const {
   DATABASE_SCHEMA
 } = process.env
 
-const schema = joi.object().keys({
-  firstName: joi.string(),
-  lastName: joi.string(),
-  email: joi.string().email()
+const loginSchema = joi.object().keys({
+  email: joi.string().email().required(),
+  password: joi.string().min(3).max(15).required(),
+  _csrf: joi.string()
 })
+
+const signupSchema = joi.object().keys({
+  email: joi.string().email().required(),
+  password: joi.string().min(3).max(15).required(),
+  passwordConfirm: joi.any().valid(joi.ref('password')).required().options({ language: { any: { allowOnly: 'Passwords must be the same' } } }),
+  _csrf: joi.string()
+})
+
+async function findOne ({ db, user }) {
+  return db[DATABASE_SCHEMA].user.findOne(user)
+}
 
 async function save ({ db, user }) {
   const hash = await generateHash(user.password)
 
-  return db[DATABASE_SCHEMA].users.save({
+  return db[DATABASE_SCHEMA].user.save({
     ...user,
     password: hash
   })
@@ -33,7 +44,9 @@ async function remove ({ db, id, user }) {
 }
 
 module.exports = {
-  schema,
+  loginSchema,
+  signupSchema,
+  findOne,
   save,
   update,
   remove
