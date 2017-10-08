@@ -6,6 +6,8 @@ const {
 } = process.env
 
 async function index (ctx) {
+  console.log(ctx.state.user)
+
   await ctx.render('index')
 }
 
@@ -31,12 +33,14 @@ async function contact (ctx) {
 }
 
 async function contactPost (ctx) {
+  const payload = ctx.request.body
+
   // No need to block rendering for sending an email..
   sendMail({
     to: CONTACT_EMAIL,
-    from: ctx.body.email,
-    subject: `${APP_NAME}: New message from ${ctx.body.name}`,
-    content: ctx.body.body
+    from: payload.email,
+    subject: `${APP_NAME}: New message from ${payload.name}`,
+    content: payload.body
   }).catch(e => ctx.logError(e))
 
   ctx.flash('success', ['We got your message, we\'ll get back to you soon :)'])
