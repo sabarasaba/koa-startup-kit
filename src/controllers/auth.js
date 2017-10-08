@@ -38,7 +38,7 @@ async function loginPost (ctx) {
       console.log(err)
       return ctx.redirect('/')
     }
-  })()
+  })(ctx)
 }
 
 async function signup (ctx) {
