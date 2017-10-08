@@ -18,6 +18,7 @@ function generateHash (password) {
   })
 }
 
+// B argument from signup form, a current users password
 function comparePassword (a, b) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(b, a, (err, isMatch) => {

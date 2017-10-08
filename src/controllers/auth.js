@@ -12,28 +12,32 @@ async function login (ctx) {
 
 async function loginPost (ctx) {
   passport.authenticate('local', (err, user, info) => {
-    console.log('dddd')
-    if (err) {
-      console.log(err)
-      ctx.flash('error', { msg: 'fuck' })
-      return ctx.redirect('/login')
-    }
-
-    if (!user) {
-      ctx.flash('errors', info)
-      return ctx.redirect('/login')
-    }
-
-    ctx.logIn(user, (err) => {
+    try {
       if (err) {
         console.log(err)
         ctx.flash('error', { msg: 'fuck' })
         return ctx.redirect('/login')
       }
 
-      ctx.flash('success', { msg: 'Success! You are logged in.' })
+      if (!user) {
+        ctx.flash('errors', info)
+        return ctx.redirect('/login')
+      }
+
+      ctx.logIn(user, (err) => {
+        if (err) {
+          console.log(err)
+          ctx.flash('error', { msg: 'fuck' })
+          return ctx.redirect('/login')
+        }
+
+        ctx.flash('success', { msg: 'Success! You are logged in.' })
+        return ctx.redirect('/')
+      })
+    } catch (err) {
+      console.log(err)
       return ctx.redirect('/')
-    })
+    }
   })()
 }
 
@@ -57,14 +61,13 @@ async function signupPost (ctx) {
       ctx.redirect('signup')
     } else {
       const newUser = await User.save({ db: ctx.db, user })
-      console.log('created ?')
 
       await ctx.login(newUser)
       ctx.redirect('/')
     }
   } catch (e) {
     console.log(e)
-    ctx.flash('error', ['Something bad happened :('])
+    ctx.flash('error', ['Couldn\'t create your account, please try again later.'])
     ctx.redirect('signup')
   }
 }
@@ -83,11 +86,17 @@ async function reset (ctx) {
   })
 }
 
+async function logout (ctx) {
+  ctx.logout()
+  ctx.redirect('/')
+}
+
 module.exports = {
   login,
   loginPost,
   signup,
   signupPost,
   forgot,
-  reset
+  reset,
+  logout
 }

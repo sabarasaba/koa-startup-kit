@@ -18,9 +18,11 @@ const session = require('koa-generic-session')
 const flash = require('koa-better-flash')
 const CSRF = require('koa-csrf')
 const helmet = require('koa-helmet')
+const passport = require('koa-passport')
 const appRoutes = require('./routes/index')
 const csrfMiddleware = require('./middlewares/csrf')
 const loggerMiddleware = require('./middlewares/logger')
+const initPassport = require('./middlewares/auth')
 const handlebarsHelpers = require('./helpers/handlebars')
 const { database } = require('./helpers/database')
 
@@ -31,14 +33,18 @@ app.name = APP_NAME
 app.port = PORT
 app.proxy = true
 
-// Set database without middleware
-database.then(db => {
-  app.context.db = db
-}).catch(e => console.log('Couldnt initialize db', e))
-
 // Session
 app.keys = [SESSION_SECRET]
-app.use(session())
+app.use(session({
+  cookie: {
+    path: '/',
+    httpOnly: false,
+    maxAge: 24 * 60 * 60 * 1000,
+    rewrite: true,
+    signed: true
+  },
+  key: APP_NAME
+}, app))
 
 // Middlewares
 app.use(flash())
@@ -56,6 +62,16 @@ app.use(new CSRF({
   disableQuery: false
 }))
 app.use(csrfMiddleware)
+
+// Set database without middleware
+database.then(db => {
+  app.context.db = db
+
+  // Setup authentication
+  initPassport(db)
+  app.use(passport.initialize())
+  app.use(passport.session())
+}).catch(e => console.log('Couldnt initialize db', e))
 
 // Mount public directory
 app.use(serve(path.join(__dirname, 'public')))
