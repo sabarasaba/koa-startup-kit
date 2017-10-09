@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const passport = require('passport')
 const User = require('../models/user')
 
 async function login (ctx) {
@@ -9,6 +10,33 @@ async function login (ctx) {
   })
 }
 
+async function loginPost (ctx, next) {
+  await passport.authenticate('local', (err, user, info) => {
+    try {
+      if (err) {
+        ctx.logError(err)
+        return next(err)
+      }
+
+      if (!user) {
+        ctx.flash('error', [info.msg])
+        return ctx.redirect('/login')
+      }
+
+      ctx.logIn(user, (err) => {
+        if (err) {
+          ctx.logError(err)
+          return next(err)
+        }
+
+        return ctx.redirect('/')
+      })
+    } catch (err) {
+      ctx.logError(err)
+      return ctx.redirect('/')
+    }
+  })(ctx, next)
+}
 async function signup (ctx) {
   await ctx.render('auth/signup', {
     title: 'Signup',
@@ -61,6 +89,7 @@ async function logout (ctx) {
 
 module.exports = {
   login,
+  loginPost,
   signup,
   signupPost,
   forgot,

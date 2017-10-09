@@ -16,6 +16,10 @@ function load (hbs) {
     return new Date().getFullYear()
   })
 
+  hbs.registerHelper('getUserDisplayName', (user, opts) => {
+    return user.firstName || user.email
+  })
+
   hbs.registerHelper('getAppName', (opts) => {
     return APP_NAME
   })

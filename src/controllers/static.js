@@ -6,8 +6,6 @@ const {
 } = process.env
 
 async function index (ctx) {
-  console.log(ctx.state.user)
-
   await ctx.render('index')
 }
 
