@@ -11,6 +11,11 @@ const loginSchema = joi.object().keys({
   _csrf: joi.string()
 })
 
+const forgotSchema = joi.object().keys({
+  email: joi.string().email().required(),
+  _csrf: joi.string()
+})
+
 const signupSchema = joi.object().keys({
   email: joi.string().email().required(),
   password: joi.string().min(3).max(15).required(),
@@ -31,10 +36,10 @@ async function save ({ db, user }) {
   })
 }
 
-async function update ({ db, userId, user }) {
+async function update ({ db, id, user }) {
   return db[DATABASE_SCHEMA].user.update({
     ...user,
-    userId,
+    id,
     updated_at: new Date()
   })
 }
@@ -46,6 +51,7 @@ async function remove ({ db, id, user }) {
 module.exports = {
   loginSchema,
   signupSchema,
+  forgotSchema,
   findOne,
   save,
   update,

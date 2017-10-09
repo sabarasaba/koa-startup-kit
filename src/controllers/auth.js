@@ -1,6 +1,14 @@
 const _ = require('lodash')
+const hat = require('hat')
 const passport = require('passport')
+const moment = require('moment')
+const { sendMail } = require('../helpers/mailer')
 const User = require('../models/user')
+
+const {
+  EMAIL_DOMAIN,
+  APP_NAME
+} = process.env
 
 async function login (ctx) {
   await ctx.render('auth/login', {
@@ -37,6 +45,7 @@ async function loginPost (ctx, next) {
     }
   })(ctx, next)
 }
+
 async function signup (ctx) {
   await ctx.render('auth/signup', {
     title: 'Signup',
@@ -54,25 +63,65 @@ async function signupPost (ctx) {
 
     if (existingUser) {
       ctx.flash('error', ['An account with that email already exists.'])
-      ctx.redirect('signup')
+      ctx.redirect('/signup')
     } else {
       const newUser = await User.save({ db: ctx.db, user })
 
       await ctx.login(newUser)
       ctx.redirect('/')
     }
-  } catch (e) {
-    console.log(e)
+  } catch (err) {
+    ctx.logError(err)
     ctx.flash('error', ['Couldn\'t create your account, please try again later.'])
-    ctx.redirect('signup')
+    ctx.redirect('/signup')
   }
 }
 
 async function forgot (ctx) {
   await ctx.render('auth/forgot', {
     title: 'Forgot Password',
-    layout: 'empty'
+    layout: 'empty',
+    flash: ctx.flash()
   })
+}
+
+async function forgotPost (ctx) {
+  const { db } = ctx
+  const payload = ctx.request.body
+  const token = hat()
+
+  try {
+    const user = await User.findOne({ db, user: { email: payload.email } })
+
+    if (user) {
+      await User.update({
+        db,
+        id: user.id,
+        user: {
+          passwordResetToken: token,
+          passwordResetExpires: moment().add(1, 'hour').format()
+        }
+      })
+
+      // No need to await until email is sent
+      sendMail({
+        to: user.email,
+        from: `no-reply@${EMAIL_DOMAIN}`,
+        subject: `Reset your password on ${APP_NAME}`,
+        content: `Click this link: http://localhost:3000/reset/${token}`
+      })
+
+      ctx.flash('success', [`An e-mail has been sent to ${user.email} with further instructions.`])
+      ctx.redirect('/forgot')
+    } else {
+      ctx.flash('error', ['Account with that email does not exist.'])
+      ctx.redirect('/forgot')
+    }
+  } catch (err) {
+    ctx.logError(err)
+    ctx.flash('error', ['Couldn\'t reset your password, please try again later.'])
+    ctx.redirect('/forgot')
+  }
 }
 
 async function reset (ctx) {
@@ -93,6 +142,7 @@ module.exports = {
   signup,
   signupPost,
   forgot,
+  forgotPost,
   reset,
   logout
 }

@@ -20,7 +20,7 @@ exports.up = function (knex, Promise) {
         // Password related stuff
         table.string('password').notNullable()
         table.string('passwordResetToken')
-        table.date('passwordResetExpires')
+        table.timestamp('passwordResetExpires')
 
         // Utils
         table.timestamp('created_at').defaultTo(knex.fn.now())
