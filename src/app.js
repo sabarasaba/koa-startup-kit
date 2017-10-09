@@ -63,14 +63,15 @@ app.use(new CSRF({
 }))
 app.use(csrfMiddleware)
 
+app.use(passport.initialize())
+app.use(passport.session())
+
 // Set database without middleware
 database.then(db => {
   app.context.db = db
 
   // Setup authentication
   initPassport(db)
-  app.use(passport.initialize())
-  app.use(passport.session())
 }).catch(e => console.log('Couldnt initialize db', e))
 
 // Mount public directory
