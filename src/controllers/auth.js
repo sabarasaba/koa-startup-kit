@@ -104,7 +104,7 @@ async function forgotPost (ctx) {
       })
 
       // No need to await until email is sent
-      sendMail({
+      await sendMail({
         to: user.email,
         from: `no-reply@${EMAIL_DOMAIN}`,
         subject: `Reset your password on ${APP_NAME}`,
