@@ -108,7 +108,8 @@ async function forgotPost (ctx) {
         to: user.email,
         from: `no-reply@${EMAIL_DOMAIN}`,
         subject: `Reset your password on ${APP_NAME}`,
-        content: `Click this link: http://localhost:3000/reset/${token}`
+        text: `Click this link: http://localhost:3000/reset/${token}`,
+        html: '<p>asd</p>'
       })
 
       ctx.flash('success', [`An e-mail has been sent to ${user.email} with further instructions.`])

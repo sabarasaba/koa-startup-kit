@@ -24,6 +24,7 @@
     "node": "8.x"
   },
   "dependencies": {
+    "@sendgrid/mail": "^6.1.4",
     "axios": "^0.16.2",
     "babel-polyfill": "^6.23.0",
     "bcrypt-nodejs": "^0.0.3",
@@ -50,7 +51,6 @@
     "moment": "^2.18.1",
     "passport-local": "^1.0.0",
     "pg": "^6.2.4",
-    "sendgrid": "^5.2.0",
     "supertest": "^3.0.0",
     "winston": "^2.4.0",
     "winston-papertrail": "^1.0.5"

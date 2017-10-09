@@ -38,7 +38,7 @@ async function contactPost (ctx) {
     to: CONTACT_EMAIL,
     from: payload.email,
     subject: `${APP_NAME}: New message from ${payload.name}`,
-    content: payload.body
+    text: payload.body
   }).catch(e => ctx.logError(e))
 
   ctx.flash('success', ['We got your message, we\'ll get back to you soon :)'])
