@@ -5,7 +5,10 @@ const {
   APP_NAME,
   PORT,
   NODE_ENV,
-  SESSION_SECRET
+  SESSION_SECRET,
+  REDIS_URL,
+  REDIS_HOST,
+  REDIS_PORT
 } = process.env
 
 const Koa = require('koa')
@@ -19,6 +22,7 @@ const flash = require('koa-better-flash')
 const CSRF = require('koa-csrf')
 const helmet = require('koa-helmet')
 const passport = require('koa-passport')
+const redisStore = require('koa-redis')
 const appRoutes = require('./routes/index')
 const csrfMiddleware = require('./middlewares/csrf')
 const loggerMiddleware = require('./middlewares/logger')
@@ -43,7 +47,13 @@ app.use(session({
     rewrite: true,
     signed: true
   },
-  key: APP_NAME
+  key: APP_NAME,
+  store: redisStore(NODE_ENV === 'production' ? {
+    url: REDIS_URL
+  } : {
+    host: REDIS_HOST,
+    port: REDIS_PORT
+  })
 }, app))
 
 // Middlewares

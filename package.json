@@ -39,6 +39,7 @@
     "koa-hbs": "^1.0.0",
     "koa-helmet": "^3.2.0",
     "koa-passport": "^4.0.1",
+    "koa-redis": "^3.1.1",
     "koa-router": "next",
     "koa-sslify": "^2.1.2",
     "koa-static": "^4.0.1",
