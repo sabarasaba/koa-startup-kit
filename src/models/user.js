@@ -43,9 +43,14 @@ async function save ({ db, user }) {
 }
 
 async function update ({ db, id, user }) {
-  // Detect if password is supplied, if it is, generate a hash for it and overwrite..
+  // If you wanna change the password, we need to hash it before storing it
+  const hashedPassword = user.password
+    ? { password: await generateHash(user.password) }
+    : {}
+
   return db[DATABASE_SCHEMA].user.update({
     ...user,
+    ...hashedPassword,
     id,
     updated_at: new Date()
   })
