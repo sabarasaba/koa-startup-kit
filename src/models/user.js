@@ -16,6 +16,12 @@ const forgotSchema = joi.object().keys({
   _csrf: joi.string()
 })
 
+const resetSchema = joi.object().keys({
+  password: joi.string().min(3).max(15).required(),
+  passwordConfirm: joi.any().valid(joi.ref('password')).required().options({ language: { any: { allowOnly: 'Passwords must be the same' } } }),
+  _csrf: joi.string()
+})
+
 const signupSchema = joi.object().keys({
   email: joi.string().email().required(),
   password: joi.string().min(3).max(15).required(),
@@ -37,6 +43,7 @@ async function save ({ db, user }) {
 }
 
 async function update ({ db, id, user }) {
+  // Detect if password is supplied, if it is, generate a hash for it and overwrite..
   return db[DATABASE_SCHEMA].user.update({
     ...user,
     id,
@@ -52,6 +59,7 @@ module.exports = {
   loginSchema,
   signupSchema,
   forgotSchema,
+  resetSchema,
   findOne,
   save,
   update,

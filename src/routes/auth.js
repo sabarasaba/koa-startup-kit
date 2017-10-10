@@ -11,7 +11,8 @@ router.get('/signup', controller.signup)
 router.post('/signup', validator(userModel.signupSchema), controller.signupPost)
 router.get('/forgot', controller.forgot)
 router.post('/forgot', validator(userModel.forgotSchema), controller.forgotPost)
-router.get('/reset', controller.reset)
+router.get('/reset/:token', controller.reset)
+router.post('/reset/:token', validator(userModel.resetSchema), controller.resetPost)
 router.get('/logout', controller.logout)
 
 module.exports = router

@@ -103,13 +103,12 @@ async function forgotPost (ctx) {
         }
       })
 
-      // No need to await until email is sent
       await sendMail({
         to: user.email,
         from: `no-reply@${EMAIL_DOMAIN}`,
         subject: `Reset your password on ${APP_NAME}`,
         text: `Click this link: http://localhost:3000/reset/${token}`,
-        html: '<p>asd</p>'
+        html: `Click this link: http://localhost:3000/reset/${token}`
       })
 
       ctx.flash('success', [`An e-mail has been sent to ${user.email} with further instructions.`])
@@ -126,10 +125,76 @@ async function forgotPost (ctx) {
 }
 
 async function reset (ctx) {
-  await ctx.render('auth/reset', {
-    title: 'Reset Password',
-    layout: 'empty'
-  })
+  if (ctx.isAuthenticated()) {
+    return ctx.redirect('/')
+  }
+
+  try {
+    const user = await User.findOne({
+      db: ctx.db,
+      user: {
+        'passwordResetExpires >': moment().format()
+      }
+    })
+
+    if (!user) {
+      ctx.flash('error', ['Password reset token is invalid or expired.'])
+      return ctx.redirect('/forgot')
+    }
+
+    await ctx.render('auth/reset', {
+      title: 'Reset Password',
+      layout: 'empty',
+      flash: ctx.flash()
+    })
+  } catch (err) {
+    ctx.logError(err)
+    ctx.flash('error', ['Couldn\'t validate your reset token, please try again later.'])
+    ctx.redirect('/forgot')
+  }
+}
+
+async function resetPost (ctx) {
+  const payload = ctx.request.body
+
+  try {
+    const user = await User.findOne({
+      db: ctx.db,
+      user: {
+        'passwordResetExpires >': moment().format()
+      }
+    })
+
+    if (!user) {
+      ctx.flash('error', ['Password reset token is invalid or expired.'])
+      return ctx.redirect('/forgot')
+    }
+
+    await User.update({
+      db: ctx.db,
+      id: user.id,
+      user: {
+        password: payload.password,
+        passwordResetExpires: null,
+        passwordResetToken: null
+      }
+    })
+
+    await sendMail({
+      to: user.email,
+      from: `no-reply@${EMAIL_DOMAIN}`,
+      subject: `Your ${APP_NAME} password has been changed`,
+      text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`,
+      html: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
+    })
+
+    ctx.flash('success', ['Success! Your password has been changed.'])
+    ctx.redirect('/login')
+  } catch (err) {
+    ctx.logError(err)
+    ctx.flash('error', ['Couldn\'t validate your reset token, please try again later.'])
+    ctx.redirect('/forgot')
+  }
 }
 
 async function logout (ctx) {
@@ -145,5 +210,6 @@ module.exports = {
   forgot,
   forgotPost,
   reset,
+  resetPost,
   logout
 }
