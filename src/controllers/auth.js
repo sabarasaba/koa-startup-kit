@@ -2,10 +2,11 @@ const _ = require('lodash')
 const hat = require('hat')
 const passport = require('passport')
 const moment = require('moment')
-const { sendMail, sendHtmlEmail } = require('../helpers/mailer')
+const { sendHtmlEmail } = require('../helpers/mailer')
 const User = require('../models/user')
 
 const {
+  HTTPS,
   EMAIL_DOMAIN,
   APP_NAME
 } = process.env
@@ -111,7 +112,8 @@ async function forgotPost (ctx) {
           subject: `Reset your password on ${APP_NAME}`,
           template: 'emails/resetPassword',
           layout: 'email',
-          preview: 'Small preview of the email',
+          preview: 'Seems like you forgot your password, click this link to change it',
+          resetUrl: `${HTTPS ? 'https://' : 'http://'}${ctx.headers.host}/reset/${token}`,
           emailText: `Click this link to reset your password: http://localhost:3000/reset/${token}`
         }
       )
@@ -185,13 +187,19 @@ async function resetPost (ctx) {
       }
     })
 
-    await sendMail({
-      to: user.email,
-      from: `no-reply@${EMAIL_DOMAIN}`,
-      subject: `Your ${APP_NAME} password has been changed`,
-      text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`,
-      html: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
-    })
+    await sendHtmlEmail(
+      ctx,
+      {
+        to: user.email,
+        from: `no-reply@${EMAIL_DOMAIN}`,
+        subject: `Your ${APP_NAME} password has been changed`,
+        template: 'emails/resetPasswordSuccess',
+        layout: 'email',
+        preview: 'This is a confirmation that the password for your account has been changed',
+        userEmail: user.email,
+        emailText: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
+      }
+    )
 
     ctx.flash('success', ['Success! Your password has been changed.'])
     ctx.redirect('/login')

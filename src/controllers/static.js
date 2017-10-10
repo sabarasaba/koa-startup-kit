@@ -6,6 +6,7 @@ const {
 } = process.env
 
 async function index (ctx) {
+  console.log(ctx.headers.host)
   await ctx.render('index')
 }
 
