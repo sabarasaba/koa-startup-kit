@@ -7,7 +7,9 @@ const notFound = new Router()
 
 notFound.all('*', async (ctx) => {
   await ctx.render('404', {
-    layout: 'empty'
+    layout: 'empty',
+    title: '404',
+    fixedHeader: true
   })
 })
 
