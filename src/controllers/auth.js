@@ -2,7 +2,7 @@ const _ = require('lodash')
 const hat = require('hat')
 const passport = require('passport')
 const moment = require('moment')
-const { sendMail } = require('../helpers/mailer')
+const { sendMail, sendHtmlEmail } = require('../helpers/mailer')
 const User = require('../models/user')
 
 const {
@@ -103,13 +103,18 @@ async function forgotPost (ctx) {
         }
       })
 
-      await sendMail({
-        to: user.email,
-        from: `no-reply@${EMAIL_DOMAIN}`,
-        subject: `Reset your password on ${APP_NAME}`,
-        text: `Click this link: http://localhost:3000/reset/${token}`,
-        html: `Click this link: http://localhost:3000/reset/${token}`
-      })
+      await sendHtmlEmail(
+        ctx,
+        {
+          to: user.email,
+          from: `no-reply@${EMAIL_DOMAIN}`,
+          subject: `Reset your password on ${APP_NAME}`,
+          template: 'emails/resetPassword',
+          layout: 'email',
+          preview: 'Small preview of the email',
+          emailText: `Click this link to reset your password: http://localhost:3000/reset/${token}`
+        }
+      )
 
       ctx.flash('success', [`An e-mail has been sent to ${user.email} with further instructions.`])
       ctx.redirect('/forgot')

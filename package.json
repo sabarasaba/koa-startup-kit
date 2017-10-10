@@ -8,7 +8,7 @@
   "scripts": {
     "test": "jest --forceExit",
     "start": "node -r dotenv/config src/",
-    "dev": "nodemon -L -r dotenv/config src/ -e 'js hbs'",
+    "dev": "clear & nodemon -L -r dotenv/config src/ -e 'js hbs'",
     "lint": "eslint src",
     "prepush": "yarn lint",
     "migrate": "knex migrate:latest",
