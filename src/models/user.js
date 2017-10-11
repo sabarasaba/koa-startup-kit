@@ -56,8 +56,8 @@ async function update ({ db, id, user }) {
   })
 }
 
-async function remove ({ db, id, user }) {
-  return db.user.destroy({ id, user })
+async function remove ({ db, id }) {
+  return db.user.destroy(id)
 }
 
 module.exports = {

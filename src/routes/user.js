@@ -8,6 +8,6 @@ const router = new Router()
 router.get('/settings', controller.settings)
 router.post('/settings/profile', controller.profilePost)
 router.post('/settings/password', validator(userModel.loginSchema), controller.passwordPost)
-router.post('/settings/delete', validator(userModel.loginSchema), controller.deletePost)
+router.post('/settings/delete', controller.deletePost)
 
 module.exports = router

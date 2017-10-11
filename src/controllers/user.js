@@ -36,9 +36,18 @@ async function passwordPost (ctx) {
 }
 
 async function deletePost (ctx) {
-  const payload = ctx.request.body
+  try {
+    await User.remove({ db: ctx.db, id: ctx.state.user.id })
 
-  ctx.redirect('/settings', payload)
+    ctx.logout()
+
+    ctx.flash('error', ['Your account has been deleted.'])
+    ctx.redirect('/')
+  } catch (err) {
+    ctx.logError(err)
+    ctx.flash('error', ['Couldn\'t delete your account. Please try again later.'])
+    ctx.redirect('/settings')
+  }
 }
 
 module.exports = {
