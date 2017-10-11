@@ -1,5 +1,6 @@
 const { FuseBox, SassPlugin, CSSPlugin } = require('fuse-box')
 const find = require('find')
+const isDev = process.env.NODE_ENV === 'development'
 
 const homeDir = 'src/public/app'
 
@@ -9,10 +10,16 @@ const runBundles = (fuse) => {
       files.forEach((file) => {
         const bundlePath = file.replace(homeDir, '')
 
-        fuse.bundle(bundlePath.replace('.js', ''))
-          .cache(false)
-          .watch()
-          .instructions(`> ${bundlePath}`)
+        if (isDev) {
+          fuse.bundle(bundlePath.replace('.js', ''))
+            .cache(false)
+            .watch()
+            .instructions(`> ${bundlePath}`)
+        } else {
+          fuse.bundle(bundlePath.replace('.js', ''))
+            .cache(false)
+            .instructions(`> ${bundlePath}`)
+        }
       })
 
       resolve()
@@ -31,7 +38,9 @@ const fuse = FuseBox.init({
   ]
 })
 
-fuse.dev()
+if (isDev) {
+  fuse.dev()
+}
 
 runBundles(fuse).then(() => {
   fuse.run()
