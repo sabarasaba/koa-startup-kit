@@ -6,8 +6,8 @@ const userModel = require('../models/user')
 const router = new Router()
 
 router.get('/settings', controller.settings)
-router.post('/settings/profile', validator(userModel.settingsSchema), controller.profilePost)
-router.post('/settings/password', validator(userModel.resetSchema), controller.passwordPost)
+router.post('/settings/profile', validator(userModel.settingsSchema, '/settings'), controller.profilePost)
+router.post('/settings/password', validator(userModel.resetSchema, '/settings'), controller.passwordPost)
 router.post('/settings/delete', controller.deletePost)
 
 module.exports = router

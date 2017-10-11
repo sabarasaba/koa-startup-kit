@@ -7,8 +7,8 @@ const {
 
 const settingsSchema = joi.object().keys({
   email: joi.string().email(),
-  firstName: joi.string(),
-  lastName: joi.string(),
+  firstName: joi.string().allow(''),
+  lastName: joi.string().allow(''),
   _csrf: joi.string()
 })
 
@@ -64,7 +64,7 @@ async function update ({ db, id, user }) {
 }
 
 async function remove ({ db, id }) {
-  return db.user.destroy(id)
+  return db[DATABASE_SCHEMA].user.destroy(id)
 }
 
 module.exports = {

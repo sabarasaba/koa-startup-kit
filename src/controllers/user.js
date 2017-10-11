@@ -22,7 +22,11 @@ async function profilePost (ctx) {
     ctx.flash('success', ['Success! Settings have been updated.'])
     ctx.redirect('/settings')
   } catch (err) {
-    // TODO: deal with errors of email duped key
+    if (err && err.code === '23505') {
+      ctx.flash('error', ['The email address you have entered is already associated with an account.'])
+      return ctx.redirect('/settings')
+    }
+
     ctx.logError(err)
     ctx.flash('error', ['Couldn\'t update your settings. Please try again later.'])
     ctx.redirect('/settings')
