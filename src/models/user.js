@@ -5,6 +5,13 @@ const {
   DATABASE_SCHEMA
 } = process.env
 
+const settingsSchema = joi.object().keys({
+  email: joi.string().email(),
+  firstName: joi.string(),
+  lastName: joi.string(),
+  _csrf: joi.string()
+})
+
 const loginSchema = joi.object().keys({
   email: joi.string().email().required(),
   password: joi.string().min(3).max(15).required(),
@@ -61,6 +68,7 @@ async function remove ({ db, id }) {
 }
 
 module.exports = {
+  settingsSchema,
   loginSchema,
   signupSchema,
   forgotSchema,

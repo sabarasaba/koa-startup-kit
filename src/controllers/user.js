@@ -32,7 +32,22 @@ async function profilePost (ctx) {
 async function passwordPost (ctx) {
   const payload = ctx.request.body
 
-  ctx.redirect('/settings', payload)
+  try {
+    await User.update({
+      db: ctx.db,
+      id: ctx.state.user.id,
+      user: {
+        password: payload.password
+      }
+    })
+
+    ctx.flash('success', ['Success! Your password have been updated.'])
+    ctx.redirect('/settings')
+  } catch (err) {
+    ctx.logError(err)
+    ctx.flash('error', ['Couldn\'t change your password. Please try again later.'])
+    ctx.redirect('/settings')
+  }
 }
 
 async function deletePost (ctx) {
