@@ -6,7 +6,6 @@ const {
 } = process.env
 
 async function index (ctx) {
-  console.log(ctx.headers.host)
   await ctx.render('index')
 }
 
@@ -46,31 +45,10 @@ async function contactPost (ctx) {
   ctx.redirect('/contact')
 }
 
-async function testEmail (ctx) {
-  let output = {}
-
-  await ctx.render.call(output, 'emails/test', {
-    title: 'Contact',
-    preview: 'Small preview of the email',
-    layout: 'email'
-  })
-
-  const html = output.body
-
-  await sendMail({
-    to: CONTACT_EMAIL,
-    subject: 'test html body',
-    html
-  }).then(() => {
-    return ctx.redirect('/')
-  }).catch(e => console.log(e))
-}
-
 module.exports = {
   index,
   about,
   terms,
   contact,
-  contactPost,
-  testEmail
+  contactPost
 }
